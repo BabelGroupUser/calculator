@@ -29,6 +29,14 @@
 		</dependency>
 
 		<dependency>
+			<artifactId>tracer</artifactId>
+			<groupId>io.corp.calculator</groupId>
+			<scope>system</scope>
+			<version>1.0.0</version>
+			<systemPath>${basedir}/lib/tracer-1.0.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
 			<groupId>com.sanitas</groupId>
 			<artifactId>contract</artifactId>
 			<version>1.0.0</version>
