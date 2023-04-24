@@ -1,0 +1,115 @@
+openapi: 3.0.1
+info:
+  title: Simple Calculator API
+  version: 1.0.0
+tags:
+  - name: calculator
+paths:
+  '/simplecalculator/integer/add':
+    post:
+      summary: adding integers
+      description: The response returns the result of the addition of integers
+      operationId: add
+      requestBody:
+        description: The integers to operate
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/simpleCalculatorRequest'
+            examples:
+              addition of two integers:
+                value:
+                  operationTerms:
+                    terms:
+                      - 0
+                      - 1
+        required: true
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/simpleCalculatorResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/simplecalculator/integer/substract':
+    post:
+      summary: substracting integers from first integer
+      description: The response returns the result of the substraction of integers from the first integer
+      operationId: substract
+      requestBody:
+        description: The integers to operate
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/simpleCalculatorRequest'
+            examples:
+              addition of two integers:
+                value:
+                  operationTerms:
+                    terms:
+                      - 3
+                      - 2
+        required: true
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/simpleCalculatorResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+components:
+  schemas:
+    simpleCalculatorRequest:
+      type: object
+      description: request for operation
+      properties:
+        operationTerms:
+          type: object
+          description: Terms of an operation
+          properties:
+            terms:
+              type: array
+              description: A list of terms
+              minItems: 0
+              example:
+                - 3
+                - 2
+              items:
+                type: integer
+                minLength: 0
+    simpleCalculatorResponse:
+      description: Result of operations
+      allOf:
+        - type: object
+          properties:
+            result:
+              type: integer
+              format: int32
+              description: Result of operations
+              example: 1
+              readOnly: true
+          required:
+            - result
+  parameters: {}
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  responses:
+    '400':
+      description: 'Bad Request, incorrect data types for terms.'
+    '500':
+      description: Unexpected error.
+security:
+  - basicAuth: []
+servers:
+  - url: 'http://localhost:8080'
+    description: Local
