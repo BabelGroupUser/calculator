@@ -1,6 +1,5 @@
 package com.sanitas.calculator.domain;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,77 +9,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 class DomainIntegerCalculatorServiceTests {
-    private static final List<Integer> ONE_TERM_LIST = List.of(new Integer[]{1});
-    private static final List<Integer> TWO_TERMS_LIST = List.of(new Integer[]{3, 2});
-    private static final Integer TWO_TERMS_ADDING_RESULT = 5;
-    private static final Integer TWO_TERMS_SUBSTRACTING_RESULT = 1;
-
     @Mock
     private DomainIntegerCalculatorService service;
 
-    @Mock
-    private OperationTerms operationTermsWithNoTerms;
-
-    @Mock
-    private OperationTerms operationTermsWithOneTerm;
-
-    @Mock
-    private OperationTerms operationTermsWithTwoTerms;
-
-    @BeforeEach
-    void init() {
-        given(operationTermsWithNoTerms.getTerms()).willReturn(new ArrayList<>());
-        given(operationTermsWithOneTerm.getTerms()).willReturn(ONE_TERM_LIST);
-        given(operationTermsWithTwoTerms.getTerms()).willReturn(TWO_TERMS_LIST);
-        given(service.add(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
-        given(service.add(operationTermsWithOneTerm)).willReturn(ONE_TERM_LIST.get(0));
-        given(service.add(operationTermsWithTwoTerms)).willReturn(TWO_TERMS_ADDING_RESULT);
-        given(service.substract(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
-        given(service.substract(operationTermsWithOneTerm)).willReturn(ONE_TERM_LIST.get(0));
-        given(service.substract(operationTermsWithTwoTerms)).willReturn(TWO_TERMS_SUBSTRACTING_RESULT);
-    }
-
-    @Test
-    void AddingNullListOfTerms() {
-        assertTrue(service.add(null) == 0);
-    }
-
     @Test
     void addingListOfNoTerms() {
+        OperationTerms operationTermsWithNoTerms = new OperationTerms(null);
+        given(service.add(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
         assertThrows(ResponseStatusException.class, () -> service.add(operationTermsWithNoTerms));
     }
 
     @Test
-    void AddingListOfOneTermGivesOneTermBack() {
-        assertEquals(ONE_TERM_LIST.get(0), service.add(operationTermsWithOneTerm));
+    void addingListOfOneTermGivesOneTermBack() {
+        List<Integer> oneTermList = List.of(new Integer[]{1});
+        OperationTerms operationTermsWithOneTerm = new OperationTerms(oneTermList);
+        given(service.add(operationTermsWithOneTerm)).willReturn(oneTermList.get(0));
+        assertEquals(oneTermList.get(0), service.add(operationTermsWithOneTerm));
     }
 
     @Test
-    void AddingListOfTwoTerms() {
-        assertEquals(TWO_TERMS_ADDING_RESULT, service.add(operationTermsWithTwoTerms));
+    void addingListOfTwoTerms() {
+        List<Integer> twoTermsList = List.of(new Integer[]{3, 2});
+        OperationTerms operationTermsWithTwoTerms = new OperationTerms(twoTermsList);
+        Integer twoTermsAddingResult = 5;
+        given(service.add(operationTermsWithTwoTerms)).willReturn(twoTermsAddingResult);
+        assertEquals(twoTermsAddingResult, service.add(operationTermsWithTwoTerms));
     }
 
     @Test
-    void SubstractingNullListOfTerms() {
-        assertTrue(service.substract(null) == 0);
-    }
-
-    @Test
-    void substractingListOfNoTerms() {
+    void subtractingListOfNoTerms() {
+        OperationTerms operationTermsWithNoTerms = new OperationTerms();
+        given(operationTermsWithNoTerms.getTerms()).willReturn(new ArrayList<>());
+        given(service.substract(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
+        assertTrue(operationTermsWithNoTerms.getTerms().isEmpty());
         assertThrows(ResponseStatusException.class, () -> service.substract(operationTermsWithNoTerms));
     }
 
     @Test
-    void SubstractingListOfOneTermGivesOneTermBack() {
-        assertEquals(ONE_TERM_LIST.get(0), service.substract(operationTermsWithOneTerm));
+    void subtractingListOfOneTermGivesOneTermBack() {
+        List<Integer> oneTermList = List.of(new Integer[]{1});
+        OperationTerms operationTermsWithOneTerm = new OperationTerms(oneTermList);
+        given(service.substract(operationTermsWithOneTerm)).willReturn(oneTermList.get(0));
+        assertEquals(oneTermList.get(0), service.substract(operationTermsWithOneTerm));
     }
 
     @Test
-    void SubstractingListOfTwoTerms() {
-        assertEquals(TWO_TERMS_SUBSTRACTING_RESULT, (int) service.substract(operationTermsWithTwoTerms));
+    void subtractingListOfTwoTerms() {
+        List<Integer> twoTermsList = List.of(new Integer[]{3, 2});
+        OperationTerms operationTermsWithTwoTerms = new OperationTerms(twoTermsList);
+        Integer twoTermsSubtractionResult = 1;
+        given(service.substract(operationTermsWithTwoTerms)).willReturn(twoTermsSubtractionResult);
+        assertEquals(twoTermsSubtractionResult, service.substract(operationTermsWithTwoTerms));
     }
 }
