@@ -7,28 +7,24 @@ import org.openapitools.model.SimpleCalculatorRequestOperationTerms;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class OperationTermsMapperTests {
+class OperationTermsMapperTests {
     private OperationTermsMapper mapper = Mappers.getMapper(OperationTermsMapper.class);
 
     @Test
-    public void givenDomainOperationTerms_whenMaps_thenCorrect() {
+    void givenDomainOperationTerms_whenMaps_thenCorrect() {
         OperationTerms operationTerms = new OperationTerms();
         operationTerms.setTerms(Arrays.asList(1, 2));
         SimpleCalculatorRequestOperationTerms destinationTerms = mapper.getRequestOperationTerms(operationTerms);
-        assertEquals(operationTerms.getTerms().size(), destinationTerms.getTerms().size());
-        assertEquals(operationTerms.getTerms().get(0), destinationTerms.getTerms().get(0));
-        assertEquals(operationTerms.getTerms().get(1), destinationTerms.getTerms().get(1));
+        assertThat(operationTerms).isEqualToComparingFieldByField(destinationTerms);
     }
 
     @Test
-    public void givenRequestOperationTerms_whenMaps_thenCorrect() {
+    void givenRequestOperationTerms_whenMaps_thenCorrect() {
         SimpleCalculatorRequestOperationTerms requestOperationTerms = new SimpleCalculatorRequestOperationTerms();
         requestOperationTerms.setTerms(Arrays.asList(1, 2));
         OperationTerms operationTerms = mapper.getDomainOperationTerms(requestOperationTerms);
-        assertEquals(requestOperationTerms.getTerms().size(), operationTerms.getTerms().size());
-        assertEquals(requestOperationTerms.getTerms().get(0), operationTerms.getTerms().get(0));
-        assertEquals(requestOperationTerms.getTerms().get(1), operationTerms.getTerms().get(1));
+        assertThat(operationTerms).hasFieldOrPropertyWithValue("terms", requestOperationTerms.getTerms());
     }
 }

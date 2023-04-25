@@ -7,8 +7,10 @@ An API for a POC calculator.
     - spring-boot-starter-test
     - spring-boot-maven-plugin
 - Springfox 3.0.0
-- [Mapstruct](https://mapstruct.org/) 1.5.3.
-- openapi- generator
+- [Mapstruct](https://mapstruct.org/) 1.5.3
+- Openapi- generator
+- AssertJ 3.4.1
+- Lombok
 
 ### Installation
 To run and develop over this service you must have the following requirements:
