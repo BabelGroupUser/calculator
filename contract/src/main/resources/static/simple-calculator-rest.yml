@@ -108,8 +108,6 @@ components:
       description: 'Bad Request, incorrect structure or wrong data types for terms.'
     '500':
       description: Unexpected error.
-security:
-  - basicAuth: []
 servers:
   - url: 'http://localhost:8080'
     description: Local
