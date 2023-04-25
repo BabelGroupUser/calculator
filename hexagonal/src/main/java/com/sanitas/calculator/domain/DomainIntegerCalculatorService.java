@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DomainIntegerCalculatorService implements IntegerCalculatorService {
-
-    private TracerImpl tracer;
+    private final TracerImpl tracer;
 
     @Autowired
     public DomainIntegerCalculatorService(TracerImpl tracer) {
