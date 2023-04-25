@@ -7,6 +7,7 @@ import com.sanitas.calculator.domain.OperationTerms;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.model.SimpleCalculatorRequest;
 import org.openapitools.model.SimpleCalculatorResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,9 @@ import java.util.Optional;
 @RequestMapping("/simplecalculator")
 public class SimpleCalculatorRestController implements DefaultApiDelegate {
     private NativeWebRequest request;
+    @Autowired
     private IntegerCalculatorService integerCalculatorService;
+    @Autowired
     private OperationTermsMapper mapper;
 
     @Override
