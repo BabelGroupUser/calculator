@@ -35,11 +35,11 @@ paths:
           $ref: '#/components/responses/400'
         '500':
           $ref: '#/components/responses/500'
-  '/simplecalculator/integer/substract':
+  '/simplecalculator/integer/subtract':
     post:
-      summary: substracting integers from first integer
-      description: The response returns the result of the substraction of integers from the first integer
-      operationId: substract
+      summary: subtracting integers from first integer
+      description: The response returns the result of the subtraction of integers from the first integer
+      operationId: subtract
       requestBody:
         description: The integers to operate
         content:

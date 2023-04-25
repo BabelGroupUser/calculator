@@ -37,14 +37,14 @@ public class DomainIntegerCalculatorService implements IntegerCalculatorService 
     }
 
     @Override
-    public Integer substract(final OperationTerms operationTerms) {
+    public Integer subtract(final OperationTerms operationTerms) {
         List<Integer> terms = operationTerms == null ? new ArrayList<>() : operationTerms.getTerms();
-        Integer result = getSubstractingResult(terms);
+        Integer result = getSubtractingResult(terms);
         tracer.trace(result);
         return result;
     }
 
-    private Integer getSubstractingResult(final List<Integer> terms) {
+    private Integer getSubtractingResult(final List<Integer> terms) {
         if (terms.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No terms found in the operation");
         }

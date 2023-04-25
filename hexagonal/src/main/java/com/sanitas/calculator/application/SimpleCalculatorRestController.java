@@ -42,10 +42,10 @@ public class SimpleCalculatorRestController implements DefaultApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SimpleCalculatorResponse> substract(final SimpleCalculatorRequest calculatorRequest) {
+    public ResponseEntity<SimpleCalculatorResponse> subtract(final SimpleCalculatorRequest calculatorRequest) {
         try {
             OperationTerms operationTerms = mapper.getDomainOperationTerms(calculatorRequest.getOperationTerms());
-            Integer result = integerCalculatorService.substract(operationTerms);
+            Integer result = integerCalculatorService.subtract(operationTerms);
             return getResponseEntity(result);
         } catch (Exception e) {
             String reason = getExceptionReason(calculatorRequest);

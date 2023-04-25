@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class SimpleCalculatorRestControllerTests {
-
     @Mock
     private NativeWebRequest request;
     @Mock
@@ -46,19 +45,19 @@ class SimpleCalculatorRestControllerTests {
     }
 
     @Test
-    void substractingReturnsInteger() {
+    void subtractingReturnsInteger() {
         SimpleCalculatorRequest simpleCalculatorRequest = new SimpleCalculatorRequest();
         SimpleCalculatorRequestOperationTerms operationTerms = new SimpleCalculatorRequestOperationTerms();
         simpleCalculatorRequest.setOperationTerms(operationTerms);
         SimpleCalculatorResponse simpleCalculatorResponse = new SimpleCalculatorResponse();
         simpleCalculatorResponse.setResult(0);
         ResponseEntity<SimpleCalculatorResponse> responseEntity = ResponseEntity.ok(simpleCalculatorResponse);
-        assertEquals(responseEntity, controller.substract(simpleCalculatorRequest));
+        assertEquals(responseEntity, controller.subtract(simpleCalculatorRequest));
     }
 
     @Test
-    void substractingWithNullRequestReturnsBadRequestError() {
-        assertThrows(ResponseStatusException.class, () -> controller.substract(null));
+    void subtractingWithNullRequestReturnsBadRequestError() {
+        assertThrows(ResponseStatusException.class, () -> controller.subtract(null));
     }
 
 }

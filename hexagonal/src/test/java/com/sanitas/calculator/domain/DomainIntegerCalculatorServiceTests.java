@@ -44,18 +44,16 @@ class DomainIntegerCalculatorServiceTests {
     @Test
     void subtractingListOfNoTerms() {
         OperationTerms operationTermsWithNoTerms = new OperationTerms();
-        given(operationTermsWithNoTerms.getTerms()).willReturn(new ArrayList<>());
-        given(service.substract(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
-        assertTrue(operationTermsWithNoTerms.getTerms().isEmpty());
-        assertThrows(ResponseStatusException.class, () -> service.substract(operationTermsWithNoTerms));
+        given(service.subtract(operationTermsWithNoTerms)).willThrow(ResponseStatusException.class);
+        assertThrows(ResponseStatusException.class, () -> service.subtract(operationTermsWithNoTerms));
     }
 
     @Test
     void subtractingListOfOneTermGivesOneTermBack() {
         List<Integer> oneTermList = List.of(new Integer[]{1});
         OperationTerms operationTermsWithOneTerm = new OperationTerms(oneTermList);
-        given(service.substract(operationTermsWithOneTerm)).willReturn(oneTermList.get(0));
-        assertEquals(oneTermList.get(0), service.substract(operationTermsWithOneTerm));
+        given(service.subtract(operationTermsWithOneTerm)).willReturn(oneTermList.get(0));
+        assertEquals(oneTermList.get(0), service.subtract(operationTermsWithOneTerm));
     }
 
     @Test
@@ -63,7 +61,7 @@ class DomainIntegerCalculatorServiceTests {
         List<Integer> twoTermsList = List.of(new Integer[]{3, 2});
         OperationTerms operationTermsWithTwoTerms = new OperationTerms(twoTermsList);
         Integer twoTermsSubtractionResult = 1;
-        given(service.substract(operationTermsWithTwoTerms)).willReturn(twoTermsSubtractionResult);
-        assertEquals(twoTermsSubtractionResult, service.substract(operationTermsWithTwoTerms));
+        given(service.subtract(operationTermsWithTwoTerms)).willReturn(twoTermsSubtractionResult);
+        assertEquals(twoTermsSubtractionResult, service.subtract(operationTermsWithTwoTerms));
     }
 }

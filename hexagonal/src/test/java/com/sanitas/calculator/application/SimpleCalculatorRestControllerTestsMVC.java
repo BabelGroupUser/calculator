@@ -55,29 +55,29 @@ class SimpleCalculatorRestControllerTestsMVC {
     }
 
     @Test
-    void substractingReturnsInteger() throws Exception {
-        this.mockMvc.perform(callPostRequestForSubstractingUsingTwoTerms())
+    void subtractingReturnsInteger() throws Exception {
+        this.mockMvc.perform(callPostRequestForSubtractingUsingTwoTerms())
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result").value(1));
     }
 
-    RequestBuilder callPostRequestForSubstractingUsingTwoTerms() {
-        return post("/simplecalculator/integer/substract")
+    RequestBuilder callPostRequestForSubtractingUsingTwoTerms() {
+        return post("/simplecalculator/integer/subtract")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
                 .content("{ \"operationTerms\" : { \"terms\" : [3, 2] } } ");
     }
 
     @Test
-    void substractingWithNullRequestReturnsBadRequestError() throws Exception {
-        this.mockMvc.perform(callPostRequestForSubstractingUsingNoTerms())
+    void subtractingWithNullRequestReturnsBadRequestError() throws Exception {
+        this.mockMvc.perform(callPostRequestForSubtractingUsingNoTerms())
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
-    RequestBuilder callPostRequestForSubstractingUsingNoTerms() {
-        return post("/simplecalculator/integer/substract")
+    RequestBuilder callPostRequestForSubtractingUsingNoTerms() {
+        return post("/simplecalculator/integer/subtract")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
                 .content("{ \"operationTerms\" : {} } ");
