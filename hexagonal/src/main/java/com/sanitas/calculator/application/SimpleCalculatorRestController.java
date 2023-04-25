@@ -1,9 +1,9 @@
 package com.sanitas.calculator.application;
 
+import com.sanitas.calculator.application.mapper.OperationTermsMapper;
 import com.sanitas.calculator.controllers.DefaultApiDelegate;
 import com.sanitas.calculator.domain.IntegerCalculatorService;
 import com.sanitas.calculator.domain.OperationTerms;
-import io.corp.calculator.TracerImpl;
 import org.openapitools.model.SimpleCalculatorRequest;
 import org.openapitools.model.SimpleCalculatorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/simplecalculator")
 public class SimpleCalculatorRestController implements DefaultApiDelegate {
-
     private NativeWebRequest request;
-    private TracerImpl tracer;
     private IntegerCalculatorService integerCalculatorService;
+    private OperationTermsMapper mapper;
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -30,43 +29,49 @@ public class SimpleCalculatorRestController implements DefaultApiDelegate {
     }
 
     @Autowired
-    public SimpleCalculatorRestController(TracerImpl tracer, IntegerCalculatorService integerCalculatorService) {
-        this.tracer = tracer;
+    public SimpleCalculatorRestController(
+            IntegerCalculatorService integerCalculatorService,
+            OperationTermsMapper mapper
+    ) {
         this.integerCalculatorService = integerCalculatorService;
+        this.mapper = mapper;
     }
 
     @Override
     public ResponseEntity<SimpleCalculatorResponse> add(final SimpleCalculatorRequest calculatorRequest) {
-        if (calculatorRequest == null || calculatorRequest.getOperationTerms() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is Empty");
-        }
         try {
-            OperationTerms operationTerms = new OperationTerms(calculatorRequest.getOperationTerms().getTerms());
-            Integer result = integerCalculatorService.substract(operationTerms);
-            tracer.trace(result);
-            SimpleCalculatorResponse simpleCalculatorResponse = new SimpleCalculatorResponse();
-            simpleCalculatorResponse.setResult(result);
-            return ResponseEntity.ok(simpleCalculatorResponse);
+            OperationTerms operationTerms = mapper.getDomainOperationTerms(calculatorRequest.getOperationTerms());
+            Integer result = integerCalculatorService.add(operationTerms);
+            return getResponseEntity(result);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request terms are not numbers");
+            String reason = getExceptionReason(calculatorRequest);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
         }
     }
 
     @Override
     public ResponseEntity<SimpleCalculatorResponse> substract(final SimpleCalculatorRequest calculatorRequest) {
-        if (calculatorRequest == null || calculatorRequest.getOperationTerms() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is Empty");
-        }
         try {
-            OperationTerms operationTerms = new OperationTerms(calculatorRequest.getOperationTerms().getTerms());
+            OperationTerms operationTerms = mapper.getDomainOperationTerms(calculatorRequest.getOperationTerms());
             Integer result = integerCalculatorService.substract(operationTerms);
-            tracer.trace(result);
-            SimpleCalculatorResponse simpleCalculatorResponse = new SimpleCalculatorResponse();
-            simpleCalculatorResponse.setResult(result);
-            return ResponseEntity.ok(simpleCalculatorResponse);
+            return getResponseEntity(result);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request terms are not numbers");
+            String reason = getExceptionReason(calculatorRequest);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
         }
+    }
+
+    private ResponseEntity<SimpleCalculatorResponse> getResponseEntity(Integer result) {
+        SimpleCalculatorResponse simpleCalculatorResponse = new SimpleCalculatorResponse();
+        simpleCalculatorResponse.setResult(result);
+        return ResponseEntity.ok(simpleCalculatorResponse);
+    }
+
+    private String getExceptionReason(SimpleCalculatorRequest calculatorRequest) {
+        if (calculatorRequest == null || calculatorRequest.getOperationTerms() == null) {
+            return "Request body is malformed";
+        }
+        return "Request terms are not numbers";
     }
 
 }

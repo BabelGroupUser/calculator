@@ -1,7 +1,7 @@
 package com.sanitas.calculator.application;
 
+import com.sanitas.calculator.application.mapper.OperationTermsMapper;
 import com.sanitas.calculator.domain.IntegerCalculatorService;
-import io.corp.calculator.TracerImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,9 +22,9 @@ class SimpleCalculatorRestControllerTests {
     @Mock
     private NativeWebRequest request;
     @Mock
-    private TracerImpl tracer;
-    @Mock
     private IntegerCalculatorService service;
+    @Mock
+    private OperationTermsMapper mapper;
 
     @InjectMocks
     private SimpleCalculatorRestController controller;

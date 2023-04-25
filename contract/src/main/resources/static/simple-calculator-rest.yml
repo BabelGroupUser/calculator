@@ -78,13 +78,13 @@ components:
             terms:
               type: array
               description: A list of terms
-              minItems: 0
+              minItems: 1
               example:
                 - 3
                 - 2
               items:
                 type: integer
-                minLength: 0
+                minLength: 1
     simpleCalculatorResponse:
       description: Result of operations
       allOf:
@@ -105,7 +105,7 @@ components:
       scheme: basic
   responses:
     '400':
-      description: 'Bad Request, incorrect data types for terms.'
+      description: 'Bad Request, incorrect structure or wrong data types for terms.'
     '500':
       description: Unexpected error.
 security:

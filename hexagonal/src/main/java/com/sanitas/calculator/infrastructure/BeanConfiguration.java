@@ -11,10 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackageClasses = CalculatorApplication.class)
 public class BeanConfiguration {
-
     @Bean
     IntegerCalculatorService integerCalculatorService() {
-        return new DomainIntegerCalculatorService();
+        return new DomainIntegerCalculatorService(TracerImpl());
     }
 
     @Bean

@@ -1,15 +1,33 @@
 package com.sanitas.calculator.domain;
 
+import io.corp.calculator.TracerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DomainIntegerCalculatorService implements IntegerCalculatorService {
 
+    private TracerImpl tracer;
+
+    @Autowired
+    public DomainIntegerCalculatorService(TracerImpl tracer) {
+        this.tracer = tracer;
+    }
+
     @Override
     public Integer add(final OperationTerms operationTerms) {
         List<Integer> terms = operationTerms == null ? new ArrayList<>() : operationTerms.getTerms();
+        Integer result = getAddingResult(terms);
+        tracer.trace(result);
+        return result;
+    }
+
+    private Integer getAddingResult(final List<Integer> terms) {
         if (terms.isEmpty()) {
-            return 0;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No terms found in the operation");
         }
         if (terms.size() == 1) {
             return terms.get(0);
@@ -22,8 +40,14 @@ public class DomainIntegerCalculatorService implements IntegerCalculatorService 
     @Override
     public Integer substract(final OperationTerms operationTerms) {
         List<Integer> terms = operationTerms == null ? new ArrayList<>() : operationTerms.getTerms();
+        Integer result = getSubstractingResult(terms);
+        tracer.trace(result);
+        return result;
+    }
+
+    private Integer getSubstractingResult(final List<Integer> terms) {
         if (terms.isEmpty()) {
-            return 0;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No terms found in the operation");
         }
         if (terms.size() == 1) {
             return terms.get(0);
