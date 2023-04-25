@@ -25,7 +25,7 @@ mvn spring-boot:run
 ### Endpoints
 http://localhost:8080/simplecalculator/integer/add
 
-http://localhost:8080/simplecalculator/integer/substract
+http://localhost:8080/simplecalculator/integer/subtract
 
 ### Local testing
 To run the test from console:
